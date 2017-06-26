@@ -1,0 +1,6 @@
+// Use this file to define mixins to be used in other files.
+
+@mixin antialiased {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

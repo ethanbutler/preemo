@@ -1,0 +1,13 @@
+{
+  "dev_url": "preemo.dev",
+  "output": "./dist/",
+  "layouts": [
+    "index",
+    "home",
+    "single"
+  ],
+  "partials": [
+    "content",
+    "header"
+  ]
+}
