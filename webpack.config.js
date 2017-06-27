@@ -1,11 +1,12 @@
 module.exports = (args) => {
   args = args || {}
 
-  const prod              = args.env === 'production'
-  const noscript          = !!args.noscript
-  const path              = require('path')
-  const webpack           = require('webpack')
-  const ExtractTextPlugin = require('extract-text-webpack-plugin')
+  const prod                       = args.env === 'production'
+  const noscript                   = !!args.noscript
+  const path                       = require('path')
+  const webpack                    = require('webpack')
+  const ExtractTextPlugin          = require('extract-text-webpack-plugin')
+  const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
 
   // CSS Loaders
   const secondaryCSS = new ExtractTextPlugin('css/style.css')
@@ -65,7 +66,12 @@ module.exports = (args) => {
     },
     plugins: [
       globalCSS,
-      secondaryCSS
+      secondaryCSS,
+      new ServiceWorkerWebpackPlugin({
+        entry: path.join(__dirname, './assets/js/serviceWorker.js'),
+        filename: 'js/sw.js',
+        publicPath: '/wp-content/themes/preemo/dist/'
+      })
     ]
   }
 
@@ -79,7 +85,6 @@ module.exports = (args) => {
             { loader: 'babel-loader' }
           ]
         },
-        // Inline CSS
         {
           test: /\_global.scss$/,
           use: globalCSS.extract(sassLoaders)
