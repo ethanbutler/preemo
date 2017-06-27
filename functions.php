@@ -59,10 +59,10 @@ add_action('wp_enqueue_scripts', function(){
   $scripts_uri = get_template_directory_uri() . '/dist/js/';
   $styles_uri  = get_template_directory_uri() . '/dist/css/';
 
-  wp_register_script('bundle/js', "{$scripts_uri}index.js", [], false, true);
+  wp_register_script('bundle/js', "{$scripts_uri}scripts.min.js", [], false, true);
   wp_enqueue_script('bundle/js');
 
-  wp_enqueue_style('main/css', "{$styles_uri}main.css");
+  //wp_enqueue_style('main/css', "{$styles_uri}main.css");
 }, 1000);
 
 // Localizes necessary JS for a layout.
@@ -81,7 +81,7 @@ $templates = [
   'embed',
   '404',
   'search',
-  'front_page',
+  '__front_page',
   'home',
   'post_type_archive',
   'tax',
@@ -99,6 +99,7 @@ $templates = [
 // Use PHP file from layouts/ in place of /. Default to layouts/index.
 add_action('template_include', function() use($templates) {
   foreach($templates as $template){
+    if(!function_exists("is_$template")) continue;
     $is_template = call_user_func("is_$template");
     if($is_template && preemo_file_exists("layouts/$template/$template")){
       preemo_layout($template);
