@@ -31,7 +31,10 @@ const normalizeName = (name, type) => {
 
 const makeJS = (name) => {
   const n = normalizeName(name, 'pascal')
-  return `const ${n} = () => {
+  const s = normalizeName(name, 'kebab')
+  return `import styles_${n} from './_${s}.scss'
+
+const ${n} = () => {
   console.log('Hello ${name}')
 }
 
@@ -93,7 +96,7 @@ const includeJS = (base, name) => {
   const n = normalizeName(name, 'kebab')
   return `
 //BEGIN ${name}
-if(window.preemo_router.indexOf('${name}') > -1 require('../../${base}/${n}/${n}.js')()
+if(window.preemo_router.indexOf('${name}') > -1) require('../../${base}/${n}/${n}.js')()
 //END ${name}
 `
 }
@@ -125,9 +128,9 @@ const addFiles = (base, name) => {
       jsFile = jsFile += includeJS(base, name)
       fs.writeFileSync(jsEntry, jsFile)
 
-      let cssFile = fs.readFileSync(cssEntry)
-      cssFile = cssFile += includeCSS(base, name)
-      fs.writeFileSync(cssEntry, cssFile)
+      // let cssFile = fs.readFileSync(cssEntry)
+      // cssFile = cssFile += includeCSS(base, name)
+      // fs.writeFileSync(cssEntry, cssFile)
     }
     catch(e) {
       reject(e)

@@ -4,10 +4,12 @@
   "layouts": [
     "index",
     "home",
-    "single"
+    "single",
+    "front_page"
   ],
   "partials": [
     "content",
-    "header"
+    "header",
+    "content-home"
   ]
 }

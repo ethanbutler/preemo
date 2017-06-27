@@ -4,7 +4,11 @@
   "description": "",
   "main": "starling.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --env.env=development",
+    "build:production": "webpack --env.noscript=true && webpack --env.env=development",
+    "start": "webpack --hide-modules --watch",
+    "rmdist": "rimraf dist",
+    "test": "yarn run lint"
   },
   "author": "Ethan Butler",
   "license": "MIT",
@@ -18,17 +22,15 @@
     "rimraf": "^2.6.1"
   },
   "devDependencies": {
+    "babel-loader": "^7.1.0",
     "babel-preset-es2015": "^6.24.1",
-    "browser-sync": "^2.18.12",
-    "dotenv": "^4.0.0",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^4.0.0",
-    "gulp-babel": "^6.1.2",
-    "gulp-browserify": "^0.5.1",
-    "gulp-plumber": "^1.1.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^3.1.0",
-    "gulp-sourcemaps": "^2.6.0",
-    "gulp-util": "^3.0.8"
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^2.1.2",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "sass-resources-loader": "^1.2.1",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.5.0"
   }
 }
