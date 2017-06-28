@@ -5,8 +5,8 @@
   "main": "starling.js",
   "scripts": {
     "build": "webpack --env.env=development",
+    "prebuild:production": "criticalCss",
     "build:production": "webpack --env.env=production",
-    "build:noscript": "webpack --env.env=noscript",
     "rmdist": "rimraf dist",
     "start": "webpack --hide-modules --env.env=development --watch",
     "ssl": "bash ./ssl/ssl.sh && echo '.pem created' && openssl pkcs12 -export -in ./ssl/server.pem -inkey ./ssl/server.pem -out ./ssl/server.p12 -passout pass:password -name localhost && echo '.pem converted to .p12'  && sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ./ssl/server.p12 && echo '.p12 trusted'",

@@ -6,7 +6,7 @@ if('serviceWorker' in navigator){
 }
 
 const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection
-const type = connection.type
+const type = connection ? connection.type : false
 
 console.log(type)
 
