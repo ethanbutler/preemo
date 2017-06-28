@@ -131,7 +131,7 @@ $service_assets = [
 foreach($service_assets as $file => $mime){
   if($_SERVER['REQUEST_URI'] === $file){
     header("Content-Type: $mime");
-    print file_get_contents(get_stylesheet_directory() . '/dist' . $file);
+    readfile(get_stylesheet_directory() . '/dist' . $file);
     exit;
   }
 }
