@@ -18,12 +18,12 @@ $css_path = get_stylesheet_directory_uri() . '/dist/css/';
   </head>
   <body>
     <header class="header">
-      <nav class="header-nav">
+      <!--<nav class="header-nav">
         <ul class="header-menu">
           <li class="header-menuItem"><?php _e('Open Source'); ?></li>
           <li class="header-menuItem"><?php _e('Client Work'); ?></li>
           <li class="header-menuItem"><?php _e('About Me'); ?></li>
           <li class="header-menuItem"><?php _e('Blog'); ?></li>
         </ul>
-      </nav>
+      </nav>-->
     </header>

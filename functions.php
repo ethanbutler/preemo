@@ -59,7 +59,7 @@ add_action('wp_enqueue_scripts', function(){
   $scripts_uri = get_template_directory_uri() . '/dist/js/';
   $styles_uri  = get_template_directory_uri() . '/dist/css/';
 
-  wp_register_script('bundle/js', "{$scripts_uri}scripts.min.js", [], false, true);
+  wp_register_script('bundle/js', JSBUNDLE, [], null, true);
   wp_enqueue_script('bundle/js');
 
   //wp_enqueue_style('main/css', "{$styles_uri}main.css");
@@ -108,3 +108,30 @@ add_action('template_include', function() use($templates) {
   }
   preemo_layout('index');
 });
+
+// Get rid of unused script/style tags
+add_action('init', function(){
+  remove_action( 'admin_print_styles', 'print_emoji_styles' );
+  remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+  remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+  remove_action( 'wp_print_styles', 'print_emoji_styles' );
+});
+
+add_action( 'wp_footer', function(){
+  wp_deregister_script( 'wp-embed' );
+});
+
+// SERVICE WORKER STUFF
+
+$service_assets = [
+  '/sw.js'             => 'application/javascript',
+  '/js/scripts.min.js' => 'application/javascript'
+];
+
+foreach($service_assets as $file => $mime){
+  if($_SERVER['REQUEST_URI'] === $file){
+    header("Content-Type: $mime");
+    print file_get_contents(get_stylesheet_directory() . '/dist' . $file);
+    exit;
+  }
+}
