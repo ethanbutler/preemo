@@ -59,7 +59,7 @@ add_action('wp_enqueue_scripts', function(){
   $scripts_uri = get_template_directory_uri() . '/dist/js/';
   $styles_uri  = get_template_directory_uri() . '/dist/css/';
 
-  wp_register_script('bundle/js', JSBUNDLE, [], null, true);
+  wp_register_script('bundle/js', site_url('/js/scripts.min.js', 'https'), [], null, true);
   wp_enqueue_script('bundle/js');
 
   //wp_enqueue_style('main/css', "{$styles_uri}main.css");

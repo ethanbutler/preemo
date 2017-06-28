@@ -7,6 +7,7 @@ module.exports = (args) => {
   const webpack                    = require('webpack')
   const ExtractTextPlugin          = require('extract-text-webpack-plugin')
   const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
+  const BrowserSyncPlugin          = require('browsersync-webpack-plugin')
 
   // CSS Loaders
   const secondaryCSS = new ExtractTextPlugin('css/style.css')
@@ -71,6 +72,16 @@ module.exports = (args) => {
         entry: path.join(__dirname, './assets/js/serviceWorker.js'),
         filename: 'sw.js',
         publicPath: '/'
+      }),
+      new BrowserSyncPlugin({
+        // FIXME: make these values dynamic
+        target:   'https://preemo.dev',
+        proxyUrl: 'https://localhost:8000',
+        watch:    [],
+        https: {
+          key:  path.join(__dirname, './server.key'),
+          cert: path.join(__dirname, './server.crt'),
+        }
       })
     ]
   }
