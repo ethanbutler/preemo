@@ -4,9 +4,9 @@ const Content = () => {
 
   document.addEventListener('click', e => {
     console.log(e)
-    e.preventDefault();
+    //e.preventDefault();
 
-    return false;
+    //return false;
   })
 
 }

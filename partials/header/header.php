@@ -2,13 +2,15 @@
 $css_path = get_stylesheet_directory_uri() . '/dist/css/';
 ?>
 <!DOCTYPE html>
-<html>
+<html <?php language_attributes(); ?>>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#56a0d3">
     <?php wp_head(); ?>
-    <title><?php wp_title('|', true, 'right');?></title>
+    <link rel="manifest" href="/manifest.json">
+    <title><?php wp_title();?></title>
     <style>
       <?php include(get_stylesheet_directory() . '/dist/css/global.css'); ?>
     </style>
