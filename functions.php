@@ -59,11 +59,21 @@ add_action('wp_enqueue_scripts', function(){
   $scripts_uri = get_template_directory_uri() . '/dist/js/';
   $styles_uri  = get_template_directory_uri() . '/dist/css/';
 
-  wp_register_script('bundle/js', JSBUNDLE, [], null, true);
+  wp_register_script('bundle/js', site_url('/js/scripts.min.js#async', 'https'), [], null, true);
   wp_enqueue_script('bundle/js');
 
   //wp_enqueue_style('main/css', "{$styles_uri}main.css");
 }, 1000);
+
+add_action('clean_url', function($url){
+  if(strpos($url, '#async') === false){
+    return $url;
+  } elseif(is_admin()){
+    return str_replace('#async', '', $url);
+  } else {
+    return str_replace("#async", '', $url) . "' async='async";
+  }
+});
 
 // Localizes necessary JS for a layout.
 add_action('wp_footer', function(){
@@ -125,13 +135,16 @@ add_action( 'wp_footer', function(){
 
 $service_assets = [
   '/sw.js'             => 'application/javascript',
-  '/js/scripts.min.js' => 'application/javascript'
+  '/js/scripts.min.js' => 'application/javascript',
+  '/css/style.css'     => 'text/css'
 ];
 
 foreach($service_assets as $file => $mime){
   if($_SERVER['REQUEST_URI'] === $file){
     header("Content-Type: $mime");
-    print file_get_contents(get_stylesheet_directory() . '/dist' . $file);
+    header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + (60 * 60 * 24 * 30)));
+    ob_start('ob_gzhandler');
+    readfile(get_stylesheet_directory() . '/dist' . $file);
     exit;
   }
 }
