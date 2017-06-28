@@ -1,8 +1,6 @@
 <?php
 
 global $preemo;
-define('SERVICEWORKER', '/sw.js');
-define('JSBUNDLE', '/js/scripts.min.js');
 
 $preemo = [];
 
@@ -123,16 +121,17 @@ add_action( 'wp_footer', function(){
   wp_deregister_script( 'wp-embed' );
 });
 
-// emulate service worker being at domain root
-if($_SERVER['REQUEST_URI'] === SERVICEWORKER){
-  header("Content-Type: application/javascript");
-  print file_get_contents(get_stylesheet_directory() . '/dist' . SERVICEWORKER);
-  exit;
-}
+// SERVICE WORKER STUFF
 
-// emulate service worker being at domain root
-if($_SERVER['REQUEST_URI'] === JSBUNDLE){
-  header("Content-Type: application/javascript");
-  print file_get_contents(get_stylesheet_directory() . '/dist' . JSBUNDLE);
-  exit;
+$service_assets = [
+  '/sw.js'             => 'application/javascript',
+  '/js/scripts.min.js' => 'application/javascript'
+];
+
+foreach($service_assets as $file => $mime){
+  if($_SERVER['REQUEST_URI'] === $file){
+    header("Content-Type: $mime");
+    print file_get_contents(get_stylesheet_directory() . '/dist' . $file);
+    exit;
+  }
 }
