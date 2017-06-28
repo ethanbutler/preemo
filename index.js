@@ -176,33 +176,33 @@ const cleanFiles = (base, name) => {
   })
 }
 
-const cleanManifest = (type, name) => {
+const cleanSchema = (type, name) => {
   return new Promise((resolve, reject) => {
     const pwd      = process.env.PWD
-    let manifest = require(`${pwd}/manifest.json`)
-    let base = manifest[type]
+    let schema = require(`${pwd}/schema.json`)
+    let base = schema[type]
     let index = base.indexOf(name)
     base.splice(index, 1)
-    manifest[type] = base
-    const json     = JSON.stringify(manifest, null, 2)
+    schema[type] = base
+    const json     = JSON.stringify(schema, null, 2)
 
-    fs.writeFile('manifest.json', json, err => {
+    fs.writeFile('schema.json', json, err => {
       if(err) reject(err)
-      else resolve('Manifest synced')
+      else resolve('Schema synced')
     })
   })
 }
 
-const syncManifest = (base, name) => {
+const syncSchema = (base, name) => {
   return new Promise((resolve, reject) => {
     const pwd      = process.env.PWD
-    const manifest = require(`${pwd}/manifest.json`)
-    manifest[base].push(name)
-    const json     = JSON.stringify(manifest, null, 2)
+    const schema = require(`${pwd}/schema.json`)
+    schema[base].push(name)
+    const json     = JSON.stringify(schema, null, 2)
 
-    fs.writeFile('manifest.json', json, err => {
+    fs.writeFile('schema.json', json, err => {
       if(err) reject(err)
-      else resolve('Manifest synced')
+      else resolve('Schema synced')
     })
   })
 }
@@ -226,7 +226,7 @@ program
           cleanFiles(type, name)
             .then(success => {
               console.log(chalk.white(success))
-              cleanManifest(type, name)
+              cleanSchema(type, name)
                 .then(success => {
                   console.log(chalk.white(success))
                   console.log(chalk.green('Component removed'))
@@ -243,7 +243,7 @@ program
           addFiles(type, name)
             .then(success => {
               console.log(chalk.white(success))
-              syncManifest(type, name)
+              syncSchema(type, name)
                 .then(success => {
                   console.log(chalk.white(success))
                   console.log(chalk.green('Component added'))

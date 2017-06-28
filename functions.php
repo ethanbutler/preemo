@@ -91,7 +91,7 @@ $templates = [
   'embed',
   '404',
   'search',
-  '__front_page',
+  'front_page',
   'home',
   'post_type_archive',
   'tax',
@@ -148,3 +148,23 @@ foreach($service_assets as $file => $mime){
     exit;
   }
 }
+
+// MANIFEST STUFF
+
+require_once(get_stylesheet_directory() . '/lib/class-PreemoManifest.php');
+
+PreemoManifest::init();
+
+// SSL STUFF
+// This is probably best left to Apache/Nginx
+if($_SERVER["HTTPS"] != "on"){
+  header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+  exit();
+}
+
+// TITLE FIX
+
+add_filter('wp_title', function($title){
+  if(empty($title)) $title = __('Home', 'textdomain') . ' | ' . get_bloginfo('name');
+  return $title;
+});
