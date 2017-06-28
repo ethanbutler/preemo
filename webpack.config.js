@@ -69,8 +69,8 @@ module.exports = (args) => {
       secondaryCSS,
       new ServiceWorkerWebpackPlugin({
         entry: path.join(__dirname, './assets/js/serviceWorker.js'),
-        filename: 'js/sw.js',
-        publicPath: '/wp-content/themes/preemo/dist/'
+        filename: 'sw.js',
+        publicPath: '/'
       })
     ]
   }

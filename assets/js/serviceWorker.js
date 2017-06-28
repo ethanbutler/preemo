@@ -9,8 +9,13 @@ const {
 const CACHE_NAME = (new Date()).toISOString()
 
 let assetsToCache = [
-  ...assets
-].map(path => new URL(path, global.location).toString())
+  ...assets,
+  '/'
+].map(path => {
+  const base = global.location
+  const url = new URL(path, global.location).toString()
+  return url
+})
 
 // Installation script
 self.addEventListener('install', event => {
@@ -23,6 +28,7 @@ self.addEventListener('install', event => {
       .then(cache => cache.addAll(assetsToCache))
       .then(() => {
         if(DEBUG) console.log('Cached assets: main', assetsToCache)
+        return self.skipWaiting()
       })
       .catch(err => {
         console.log('Install error')
@@ -43,7 +49,6 @@ self.addEventListener('activate', event => {
       .then(cacheNames => {
         return Promise.all(
           cacheNames.map(cacheName => {
-            // Delete non-current caches
             if(cacheName.indexOf(CACHE_NAME) === 0) return null
 
             return global.caches.delete(cacheName)
@@ -73,7 +78,10 @@ self.addEventListener('message', event => {
 
 // ???
 self.addEventListener('fetch', event => {
+  console.log('fetch')
   const { request } = event
+
+  if(DEBUG) console.log('[SW] Fetch')
 
   if(request.method !== 'GET'){
     if(DEBUG) console.log(`[SW] Ignore non GET request ${request.method}`)
@@ -98,6 +106,7 @@ self.addEventListener('fetch', event => {
 
       // Make request to network for resource if not in cache
       return fetch(request)
+        console.log(request)
         .then(responseNetwork => {
           // Response network can't be found ???
           if(!responseNetwork || !responseNetwork.ok){
@@ -131,5 +140,5 @@ self.addEventListener('fetch', event => {
         })
     })
 
-  event.responseWith(resouce)
+  event.respondWith(resource)
 })

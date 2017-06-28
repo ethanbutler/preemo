@@ -1,6 +1,8 @@
 <?php
 
 global $preemo;
+define('SERVICEWORKER', '/sw.js');
+define('JSBUNDLE', '/js/scripts.min.js');
 
 $preemo = [];
 
@@ -59,7 +61,7 @@ add_action('wp_enqueue_scripts', function(){
   $scripts_uri = get_template_directory_uri() . '/dist/js/';
   $styles_uri  = get_template_directory_uri() . '/dist/css/';
 
-  wp_register_script('bundle/js', "{$scripts_uri}scripts.min.js", [], false, true);
+  wp_register_script('bundle/js', JSBUNDLE, [], null, true);
   wp_enqueue_script('bundle/js');
 
   //wp_enqueue_style('main/css', "{$styles_uri}main.css");
@@ -120,3 +122,17 @@ add_action('init', function(){
 add_action( 'wp_footer', function(){
   wp_deregister_script( 'wp-embed' );
 });
+
+// emulate service worker being at domain root
+if($_SERVER['REQUEST_URI'] === SERVICEWORKER){
+  header("Content-Type: application/javascript");
+  print file_get_contents(get_stylesheet_directory() . '/dist' . SERVICEWORKER);
+  exit;
+}
+
+// emulate service worker being at domain root
+if($_SERVER['REQUEST_URI'] === JSBUNDLE){
+  header("Content-Type: application/javascript");
+  print file_get_contents(get_stylesheet_directory() . '/dist' . JSBUNDLE);
+  exit;
+}
