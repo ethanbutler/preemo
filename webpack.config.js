@@ -1,8 +1,9 @@
 module.exports = (args) => {
   args = args || {}
 
+  const dev                        = args.env === 'development'
   const prod                       = args.env === 'production'
-  const noscript                   = !!args.noscript
+  const noscript                   = args.env === 'noscript'
   const path                       = require('path')
   const webpack                    = require('webpack')
   const ExtractTextPlugin          = require('extract-text-webpack-plugin')
@@ -16,7 +17,7 @@ module.exports = (args) => {
     {
       loader: 'css-loader',
       options: {
-        minimize: prod
+        minimize: prod || noscript
       }
     },
     { loader: 'sass-loader' },
@@ -35,7 +36,7 @@ module.exports = (args) => {
 
   const config  = {
     context: path.resolve(__dirname, './assets/'),
-    devtool: !prod ? 'inline-sourcemap': false,
+    devtool: dev ? 'inline-sourcemap': false,
     entry: './js/index.js',
     output: {
       path: path.resolve(__dirname, './dist/'),
@@ -82,7 +83,8 @@ module.exports = (args) => {
           key:  path.join(__dirname, './server.key'),
           cert: path.join(__dirname, './server.crt'),
         }
-      })
+      }),
+      new webpack.optimize.UglifyJsPlugin()
     ]
   }
 
