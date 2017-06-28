@@ -11,9 +11,9 @@ module.exports = (args) => {
   const BrowserSyncPlugin          = require('browsersync-webpack-plugin')
 
   // CSS Loaders
-  const secondaryCSS = new ExtractTextPlugin('css/style.css')
-  const globalCSS    = new ExtractTextPlugin('css/global.css')
-  const sassLoaders  = [
+  const secondaryCSS   = new ExtractTextPlugin('css/style.css')
+  const criticalCSS    = new ExtractTextPlugin('css/critical.css')
+  const sassLoaders    = [
     {
       loader: 'css-loader',
       options: {
@@ -51,14 +51,9 @@ module.exports = (args) => {
             { loader: 'babel-loader' }
           ]
         },
-        // Inline CSS
-        {
-          test: /\_global.scss$/,
-          use: globalCSS.extract(sassLoaders)
-        },
         {
           test: /\.scss$/,
-          exclude: /\_global.scss$/,
+          exclude: /\_critical.scss$/,
           use: [
             { loader: 'style-loader' },
             ...sassLoaders
@@ -67,7 +62,7 @@ module.exports = (args) => {
       ]
     },
     plugins: [
-      globalCSS,
+      criticalCSS,
       secondaryCSS,
       new ServiceWorkerWebpackPlugin({
         entry: path.join(__dirname, './assets/js/serviceWorker.js'),
@@ -99,12 +94,12 @@ module.exports = (args) => {
           ]
         },
         {
-          test: /\_global.scss$/,
-          use: globalCSS.extract(sassLoaders)
+          test: /\_critical.scss$/,
+          use: criticalCSS.extract(sassLoaders)
         },
         {
           test: /\.scss$/,
-          exclude: /\_global.scss$/,
+          exclude: /\_critical.scss$/,
           use: secondaryCSS.extract(sassLoaders)
         }
       ]
