@@ -12,7 +12,7 @@ $css_path = get_stylesheet_directory_uri() . '/dist/css/';
     <link rel="manifest" href="/manifest.json">
     <title><?php wp_title();?></title>
     <style>
-      <?php include(get_stylesheet_directory() . '/dist/css/global.css'); ?>
+      <?php include(get_stylesheet_directory() . '/dist/css/critical.css'); ?>
     </style>
     <noscript>
       <link rel="stylesheet" href="<?= $css_path . 'style.css'; ?>">
@@ -20,12 +20,5 @@ $css_path = get_stylesheet_directory_uri() . '/dist/css/';
   </head>
   <body>
     <header class="header">
-      <!--<nav class="header-nav">
-        <ul class="header-menu">
-          <li class="header-menuItem"><?php _e('Open Source'); ?></li>
-          <li class="header-menuItem"><?php _e('Client Work'); ?></li>
-          <li class="header-menuItem"><?php _e('About Me'); ?></li>
-          <li class="header-menuItem"><?php _e('Blog'); ?></li>
-        </ul>
-      </nav>-->
+      Header!
     </header>

@@ -5,6 +5,11 @@ if('serviceWorker' in navigator){
   const registration = runtime.register()
 }
 
+const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection
+const type = connection.type
+
+console.log(type)
+
 //BEGIN index
 if(window.preemo_router.indexOf('index') > -1) require('../../layouts/index/index.js')()
 //END index
